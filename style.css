@@ -86,6 +86,9 @@ ul {
   background-color: #f1c1c1;
 }
 
+.discussion__wrapper {
+  margin-bottom: 60px;
+}
 .discussion__container {
   width: 600px;
   margin: 0 auto;

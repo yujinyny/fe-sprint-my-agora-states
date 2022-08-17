@@ -6,9 +6,16 @@ const dataFromLocalStorage = localStorage.getItem("agoraStatesDiscussions");
 if (dataFromLocalStorage) {
   data = JSON.parse(dataFromLocalStorage);
 } else {
-  data = agoraStatesDiscussions.slice();
+  // data = agoraStatesDiscussions;
+  fetch("http://localhost:4000/discussions")
+    .then((res) => res.json())
+    .then((res) => {
+      data = res;
+      console.log("fetch ", data);
+      // const ul = document.querySelector("ul.discussions__container");
+      render(ul, 0, limit);
+    });
 }
-console.log("data ", data);
 
 // convertToDiscussion은 아고라 스테이츠 데이터를 DOM으로 바꿔줍니다.
 const convertToDiscussion = (obj) => {
@@ -83,9 +90,12 @@ const convertToDiscussion = (obj) => {
   return li;
 };
 
+let limit = 10,
+  page = 1;
+
 // agoraStatesDiscussions 배열의 모든 데이터를 화면에 렌더링하는 함수입니다.
 const render = (element, from, to) => {
-  console.log(from, to);
+  console.log("페이지 이동 ", from, to);
   if (!from && !to) {
     from = 0;
     to = data.length - 1;
@@ -100,12 +110,9 @@ const render = (element, from, to) => {
   return;
 };
 
-let limit = 10,
-  page = 1;
-
 // ul 요소에 agoraStatesDiscussions 배열의 모든 데이터를 화면에 렌더링합니다.
 const ul = document.querySelector("ul.discussions__container");
-render(ul, 0, limit);
+// render(ul, 0, limit);
 
 const getPageStartEnd = (limit, page) => {
   const len = data.length - 1;
